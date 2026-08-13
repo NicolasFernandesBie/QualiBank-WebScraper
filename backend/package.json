@@ -1,0 +1,28 @@
+{
+  "name": "qualibank-webscraper",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node src/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/NicolasFernandesBie/QualiBank-WebScraper.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/NicolasFernandesBie/QualiBank-WebScraper/issues"
+  },
+  "homepage": "https://github.com/NicolasFernandesBie/QualiBank-WebScraper#readme",
+  "dependencies": {
+    "cheerio": "^1.2.0",
+    "dotenv": "^17.4.2",
+    "puppeteer": "^25.6.0",
+    "yauzl": "^3.4.0"
+  }
+}
