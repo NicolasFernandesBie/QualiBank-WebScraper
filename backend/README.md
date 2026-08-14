@@ -41,7 +41,7 @@ backend/
 | ---------------------- | --------------------------------------------------------------------------------------------- |
 | `saveCookies`          | Salva a sessão do QualiBank em `cookies.json` para não logar toda vez.                        |
 | `loadCookies`          | Lê `cookies.json` e injeta no navegador.                                                      |
-| `isValidSession`       | Abre a página de consulta e vê se não caiu no login (cookies válidos?).                       |
+| `isValidSession` | Abre a página de consulta e confirma que a sessão é válida (só é válida se a URL for `/inss-balances`; caiu em login/`sign-out`, é inválida). |
 | `validaSession`        | "Porteiro": carrega cookies, valida sessão e apaga o arquivo se expirou.                      |
 | `userLogin`            | Preenche usuário e senha, clica em entrar e salva os cookies novos.                           |
 | `fillConsultationForm` | Abre o formulário, digita nome/CPF/benefício e clica em "Confirmar".                          |
@@ -155,4 +155,5 @@ curl -X POST http://localhost:3001/consulta \
 - **Sem banco de dados:** as credenciais ficam no `.env` e os resultados são descartados após exibidos.
 - **Fila em memória:** uma consulta por vez (necessário pelo site de terceiros).
 - **`x-api-key`:** protege a API contra acesso não autorizado.
+- **Sessão automática:** se os cookies estiverem expirados, o bot apaga `cookies.json`, refaz o login e salva a sessão nova (sem intervenção manual).
 - **Browser por requisição:** cada consulta abre e fecha um navegador (mais robusto; otimização futura: pool de browsers).

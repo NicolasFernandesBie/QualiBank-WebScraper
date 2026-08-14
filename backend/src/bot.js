@@ -36,11 +36,8 @@ async function loadCookies(page) {
 async function isValidSession(page) {
   await page.goto(URL_CONSULTA, { waitUntil: 'networkidle2' })
 
-  if (page.url().includes('/sign-in')) {
-    return false
-  }
-
-  return true
+  // sessao valida apenas se estiver na pagina de consultas
+  return page.url().includes('/inss-balances')
 }
 
 async function validaSession(page) {
@@ -149,12 +146,11 @@ async function consultar(dados) {
         res.url().includes('/query-inss-balances/finder/await') &&
         res.request().method() === 'POST' &&
         res.status() === 200,
-      { timeout: 60000 },
+      { timeout: 90000 },
     )
 
     const data = await response.json()
     const executionTimeMs = Date.now() - inicio
-    console.log(`consulta concluida em ${executionTimeMs}ms`)
     return { success: true, data, executionTimeMs }
   } catch (erro) {
     const statusCode = erro.name === 'TimeoutError' ? 422 : 500
