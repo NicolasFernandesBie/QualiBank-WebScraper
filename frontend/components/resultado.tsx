@@ -1,44 +1,5 @@
-import type { ConsultaResultado } from "@/lib/types"
-
-type ParValor = { chave: string; valor: string }
-
-function formatarChave(chave: string) {
-  return chave.replace(/_/g, " ").replace(/\b\w/g, (letra) => letra.toUpperCase())
-}
-
-function achatar(objeto: unknown, prefixo = ""): ParValor[] {
-  if (objeto === null || objeto === undefined) {
-    return [{ chave: prefixo || "valor", valor: "-" }]
-  }
-
-  if (typeof objeto !== "object") {
-    return [{ chave: prefixo || "valor", valor: String(objeto) }]
-  }
-
-  return Object.entries(objeto).flatMap(([chave, valor]) => {
-    const chaveCompleta = prefixo ? `${prefixo}.${chave}` : chave
-
-    if (valor === null || valor === undefined) {
-      return [{ chave: chaveCompleta, valor: "-" }]
-    }
-
-    if (typeof valor === "object") {
-      if (Array.isArray(valor)) {
-        const itens = valor as unknown[]
-        return itens.length === 0
-          ? [{ chave: chaveCompleta, valor: "[]" }]
-          : [
-              ...itens.flatMap((item, indice) =>
-                achatar(item, `${chaveCompleta}[${indice}]`),
-              ),
-            ]
-      }
-      return achatar(valor, chaveCompleta)
-    }
-
-    return [{ chave: chaveCompleta, valor: String(valor) }]
-  })
-}
+import type { ConsultaResultado } from "@/types/consulta"
+import { achatar, formatarChave } from "@/utils/resultado"
 
 export function Resultado({ resultado }: { resultado: ConsultaResultado }) {
   if (!resultado.success) {
@@ -46,10 +7,20 @@ export function Resultado({ resultado }: { resultado: ConsultaResultado }) {
   }
 
   const pares = achatar(resultado.data)
+  const tempoMs = resultado.executionTimeMs ?? 0
+  const tempoExibicao =
+    tempoMs >= 1000 ? `${(tempoMs / 1000).toFixed(1)}s` : `${tempoMs}ms`
 
   return (
     <div className="mt-6 border-t border-neutral-200 pt-6">
-      <h2 className="mb-4 text-lg font-semibold text-neutral-900">Resultado</h2>
+      <div className="mb-4 flex items-center justify-between">
+        <h2 className="text-lg font-semibold text-neutral-900">Resultado</h2>
+        {tempoMs > 0 && (
+          <p className="text-sm text-neutral-500">
+            Tempo de execução: <span className="font-medium text-neutral-700">{tempoExibicao}</span>
+          </p>
+        )}
+      </div>
 
       {pares.length === 0 ? (
         <p className="text-sm text-neutral-500">

@@ -4,8 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node src/index.js"
+    "start": "node src/index.js",
+    "server": "node src/server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
@@ -22,7 +23,9 @@
   "dependencies": {
     "cheerio": "^1.2.0",
     "dotenv": "^17.4.2",
+    "express": "^5.2.1",
     "puppeteer": "^25.6.0",
-    "yauzl": "^3.4.0"
+    "yauzl": "^3.4.0",
+    "zod": "^4.4.3"
   }
 }
